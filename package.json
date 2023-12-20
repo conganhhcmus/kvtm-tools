@@ -1,0 +1,17 @@
+{
+  "name": "adbkit-monkey",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "auto": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "adbkit": "^2.0.17",
+    "bluebird": "^3.7.2",
+    "moment": "^2.29.4"
+  }
+}
