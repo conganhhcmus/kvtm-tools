@@ -4,10 +4,10 @@ const Scripts = require("./scripts");
 
 
 const RunAuto = (client) => {
-    const RESET_AFTER_LOOPS = 2;
+    const RESET_AFTER_LOOPS = 1;
     const NUMBER_OF_MAKE_GOODS = 2 * 10;
 
-    Scripts.OpenGame(client);
+    //Scripts.OpenGame(client);
     
     for (var j = 0; j < RESET_AFTER_LOOPS; j++) {
         for (var k = 0; k < NUMBER_OF_MAKE_GOODS; k++) {
@@ -19,7 +19,7 @@ const RunAuto = (client) => {
             Scripts.PlantTrees(client, 0);
 
             Scripts.GoDownLast(client);
-            Scripts.Sleep(client, 5);
+            Scripts.Sleep(client, 6);
             Scripts.GoUp(client);
 
             // Harvest
@@ -53,8 +53,6 @@ const RunAuto = (client) => {
 };
 
 const Main = () => {
-    //$ adb shell kill $(adb shell pgrep monkey)
-
     var client = ADB.createClient();
 
     client.listDevices()
