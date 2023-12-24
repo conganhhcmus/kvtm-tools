@@ -8,7 +8,7 @@ const RunAuto = (client) => {
     const NUMBER_OF_MAKE_GOODS = 2 * 10;
 
     Scripts.OpenGame(client);
-    
+
     for (var j = 0; j < RESET_AFTER_LOOPS; j++) {
         for (var k = 0; k < NUMBER_OF_MAKE_GOODS; k++) {
             // Floor 1
@@ -26,7 +26,7 @@ const RunAuto = (client) => {
             // Go Down
             Scripts.BackToGame(client);
             Scripts.GoDownLast(client);
-            Scripts.Sleep(client, 12);
+            Scripts.Sleep(client, 14);
         }
 
         // Sell Goods
@@ -38,11 +38,11 @@ const RunAuto = (client) => {
     });
 };
 
-const Main = () => {
+const Main = (excludeDevices = []) => {
     var client = ADB.createClient();
 
     client.listDevices()
-        .then((devices) => Promise.map(devices, (device) =>
+        .then((devices) => Promise.map(devices.filter(device => !excludeDevices.includes(device.id)), (device) =>
             client.shell(device.id, "kill $(pgrep monkey)").then(() =>
                 client.shell(device.id, "nohup monkey --port 1080 &").then(() =>
                     client.forward(device.id, "tcp:1080", "tcp:1080").then(() =>
@@ -56,5 +56,5 @@ const Main = () => {
         ))
 }
 
-// Run Main Function
-Main();
+//Run Main Function
+Main(process.argv.slice(2));
