@@ -4,43 +4,29 @@ const Scripts = require("./scripts");
 
 
 const RunAuto = (client) => {
-    const RESET_AFTER_LOOPS = 1;
+    const RESET_AFTER_LOOPS = 2;
     const NUMBER_OF_MAKE_GOODS = 2 * 10;
 
-    //Scripts.OpenGame(client);
+    Scripts.OpenGame(client);
     
     for (var j = 0; j < RESET_AFTER_LOOPS; j++) {
         for (var k = 0; k < NUMBER_OF_MAKE_GOODS; k++) {
-            // Plant
+            // Floor 1
             Scripts.GoUp(client);
+            Scripts.HarvestTrees(client);
             Scripts.PlantTrees(client, 3);
+            Scripts.MakeGoods(client, 2, 4);
 
+            // Floor 3
             Scripts.GoUp(client, 2);
+            Scripts.HarvestTrees(client);
             Scripts.PlantTrees(client, 0);
-
-            Scripts.GoDownLast(client);
-            Scripts.Sleep(client, 6);
-            Scripts.GoUp(client);
-
-            // Harvest
-            Scripts.HarvestTrees(client);
-            Scripts.GoUp(client, 2);
-
-            Scripts.HarvestTrees(client);
-            Scripts.GoDownLast(client);
-            Scripts.GoUp(client);
-
-            // Make Goods
-            Scripts.MakeGoods(client, 2, 4);
-            Scripts.GoUp(client);
-
-            Scripts.GoUp(client);
             Scripts.MakeGoods(client, 2, 4);
 
+            // Go Down
             Scripts.BackToGame(client);
             Scripts.GoDownLast(client);
-
-            Scripts.Sleep(client, 4);
+            Scripts.Sleep(client, 12);
         }
 
         // Sell Goods

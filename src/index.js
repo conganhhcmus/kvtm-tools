@@ -2,7 +2,8 @@ const moment = require("moment");
 const forever = require('forever-monitor');
 const { exec } = require("child_process");
 
-const NUMBER_OF_LOOPS = 50;
+const NUMBER_OF_LOOPS = 20;
+var listDevices = [];
 
 const child = new (forever.Monitor)('auto.js', {
     max: NUMBER_OF_LOOPS,
@@ -11,6 +12,9 @@ const child = new (forever.Monitor)('auto.js', {
 });
 
 child.on('start', function () {
+    exec("adb devices | grep emulator | cut -f1", (err, stdout) => {
+        listDevices = stdout.trim("\n").split("\n");
+    });
     console.error('Start at ' + moment().format("LTS"));
 });
 
@@ -26,6 +30,8 @@ child.start();
 
 // stop auto when Ctrl + C
 process.on('SIGINT', function () {
-    exec("adb shell kill $(adb shell pgrep monkey)");
+    console.log("\nStop Devices: " + listDevices);
+    listDevices.forEach(device => exec(`adb -s ${device} shell kill $(adb -s ${device} shell pgrep monkey)`));
+
     process.exit();
 })
