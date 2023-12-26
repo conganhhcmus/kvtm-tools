@@ -2,14 +2,18 @@ const moment = require("moment");
 const forever = require('forever-monitor');
 const { exec } = require("child_process");
 
-const frequency = 20;
-const excludeDevices = ['emulator-5554', 'emulator-5556'];
+const frequency = 1;
+const excludeDevices = []; //['emulator-5554', 'emulator-5556'];
+const gameOptions = {
+    hasEventTrees: true,
+    resetAfterLoops: 2,
+}
 var runningDevices = [];
 
 const child = new (forever.Monitor)('auto.js', {
     max: frequency,
-    silent: true,
-    args: excludeDevices
+    silent: false,
+    args: [JSON.stringify(gameOptions), JSON.stringify(excludeDevices)]
 });
 
 child.on('start', function () {
@@ -34,7 +38,7 @@ child.start();
 // stop auto when Ctrl + C
 process.on('SIGINT', function () {
     console.log(`\nStop Devices: [${runningDevices}]`);
-    listDevices.forEach(device => exec(`adb -s ${device} shell kill $(adb -s ${device} shell pgrep monkey)`));
+    runningDevices.forEach(device => exec(`adb -s ${device} shell kill $(adb -s ${device} shell pgrep monkey)`));
 
     process.exit();
 })

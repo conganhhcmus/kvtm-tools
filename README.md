@@ -8,6 +8,10 @@ npm install
 
 ## Usage
 
+### Notes:
+- The device must be initialized with a length and width ratio of 16:9.
+- The size of device must greater than 800x450.
+
 ### Start KVTM Tools
 ```sh
 npm run auto
@@ -25,7 +29,19 @@ Update the **frequency** variable in *index.js* to update the number of iteratio
 const frequency = 1;
 ```
 
+### Change GameOptions
+For detail: 
+- **hasEventTrees**: is true if having event trees that can plant
+- **resetAfterLoops**: is a number that is used for setup the script runs n times before resetting
+
+```js
+const gameOptions = {
+    hasEventTrees: true,
+    resetAfterLoops: 2,
+}
+```
+
 ### Screenshot
 ```sh
-adb exec-out screencap -p > assets/{name}.png
+adb exec-out screencap -p > tmp/{name}.png
 ```
