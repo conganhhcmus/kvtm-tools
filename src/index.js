@@ -1,14 +1,17 @@
 const moment = require("moment");
 const forever = require('forever-monitor');
 const { exec } = require("child_process");
+const { AutoOptions } = require("./constants");
 
-const frequency = 1;
+const frequency = 100;
 const excludeDevices = []; //['emulator-5554', 'emulator-5556'];
 const gameOptions = {
     hasEventTrees: true,
-    resetAfterLoops: 2,
+    resetAfterLoops: 1,
+    hasOpenGame: true,
+    runAuto: AutoOptions.ProduceAndSellItems,
 }
-var runningDevices = [];
+let runningDevices = [];
 
 const child = new (forever.Monitor)('auto.js', {
     max: frequency,

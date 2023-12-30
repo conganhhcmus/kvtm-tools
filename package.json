@@ -13,6 +13,8 @@
     "adbkit": "^2.0.17",
     "bluebird": "^3.7.2",
     "forever-monitor": "^3.0.3",
-    "moment": "^2.29.4"
+    "jimp": "^0.22.10",
+    "moment": "^2.29.4",
+    "opencv-wasm": "^4.3.0-10"
   }
 }

@@ -1,7 +1,12 @@
 const { SellSlotList, PlantSlotList, MakeSlotList, FirstRowSlotList, SecondRowSlotList, DefaultBasket, DefaultProduct, SellOptions } = require("./constants");
-const { calc_Y } = require("./helpers");
 
 //#region private function
+const _Execute = (client, callback = null) => {
+    client.execute((err) => {
+        callback && callback();
+    });
+}
+
 const _Move = (client, pointA, pointB, steps = 1) => {
     const distance_x = Math.abs(pointA.x - pointB.x) / steps;
     const distance_y = Math.abs(pointA.y - pointB.y) / steps;
@@ -93,21 +98,21 @@ const GoDownLast = (device, callback = null) => {
     const [calc_X, calc_Y] = device.Calculator();
 
     GoUp(device);
-    device.client
-        .multi()
+
+    let client = device.client.multi();
+    client
         .tap(calc_X(405), calc_Y(430))
-        .sleep(1 * 1000)
-        .execute((err) => {
-            callback && callback();
-        });
+        .sleep(1 * 1000);
+
+    _Execute(client, callback);
 }
 
 const GoDown = (device, number = 1, callback = null) => {
     const [calc_X, calc_Y] = device.Calculator();
 
     for (let i = 0; i < number; i++) {
-        device.client
-            .multi()
+        let client = device.client.multi();
+        client
             .touchDown(calc_X(730), calc_Y(300))
             .sleep(5)
             .touchMove(calc_X(730), calc_Y(280))
@@ -121,10 +126,9 @@ const GoDown = (device, number = 1, callback = null) => {
             .touchMove(calc_X(730), calc_Y(200))
             .sleep(5)
             .touchUp(calc_X(730), calc_Y(200))
-            .sleep(500)
-            .execute((err) => {
-                callback && callback();
-            });
+            .sleep(500);
+
+        _Execute(client, callback);
     }
 };
 
@@ -132,9 +136,9 @@ const GoUp = (device, number = 1, callback = null) => {
     const [calc_X, calc_Y] = device.Calculator();
 
     for (let i = 0; i < number; i++) {
-        device.client
-            .multi()
-            .touchDown(calc_X(730), calc_Y(200))
+        let client = device.client.multi();
+
+        client.touchDown(calc_X(730), calc_Y(200))
             .sleep(5)
             .touchMove(calc_X(730), calc_Y(220))
             .sleep(5)
@@ -147,16 +151,15 @@ const GoUp = (device, number = 1, callback = null) => {
             .touchMove(calc_X(730), calc_Y(300))
             .sleep(5)
             .touchUp(calc_X(730), calc_Y(300))
-            .sleep(500)
-            .execute((err) => {
-                callback && callback();
-            });
+            .sleep(500);
+
+        _Execute(client, callback);
     }
 };
 
 const OpenGame = (device, callback = null) => {
     const [calc_X, calc_Y] = device.Calculator();
-    var client = device.client.multi();
+    let client = device.client.multi();
 
     client
         .press("KEYCODE_APP_SWITCH")
@@ -196,17 +199,16 @@ const OpenGame = (device, callback = null) => {
         .press("KEYCODE_BACK")
         .sleep(1 * 1000)
         .tap(calc_X(470), calc_Y(325))
-        .sleep(2 * 1000)
-        .execute((err) => {
-            callback && callback();
-        });
+        .sleep(2 * 1000);
+
+    _Execute(client, callback);
 };
 
 const HarvestTrees = (device, callback = null) => {
     const [calc_X, calc_Y] = device.Calculator();
     const [x, y] = DefaultBasket;
 
-    var client = device.client.multi();
+    let client = device.client.multi();
 
     client.tap(calc_X(300), calc_Y(380)).sleep(1.5 * 1000);
 
@@ -228,16 +230,14 @@ const HarvestTrees = (device, callback = null) => {
 
     client.touchUp(calc_X(SecondRowSlotList[SecondRowSlotList.length - 1].x), calc_Y(SecondRowSlotList[SecondRowSlotList.length - 1].y)).sleep(500);
 
-    client.execute((err) => {
-        callback && callback();
-    });
+    _Execute(client, callback);
 };
 
 const BackToGame = (device, callback = null) => {
     const [calc_X, calc_Y] = device.Calculator();
+    let client = device.client.multi();
 
-    device.client
-        .multi()
+    client
         .press("KEYCODE_BACK")
         .sleep(100)
         .press("KEYCODE_BACK")
@@ -245,33 +245,29 @@ const BackToGame = (device, callback = null) => {
         .press("KEYCODE_BACK")
         .sleep(100)
         .tap(calc_X(470), calc_Y(325))
-        .sleep(500)
-        .execute((err) => {
-            callback && callback();
-        });
+        .sleep(500);
+
+    _Execute(client, callback);
 };
 
 const PlantTrees = (device, slot = 0, callback = null) => {
     const [calc_X, calc_Y] = device.Calculator();
 
-    var client = device.client.multi();
+    let client = device.client.multi();
     // open
     client.tap(calc_X(300), calc_Y(380)).sleep(1.5 * 1000);
 
     _plantBySlot(client, [calc_X, calc_Y], slot);
 
-    // close
-    client.execute((err) => {
-        callback && callback();
-    });
+    _Execute(client, callback);
 };
 
 const MakeGoods = (device, slot = 0, number = 1, callback = null) => {
-    var client = device.client.multi();
+    let client = device.client.multi();
     const [calc_X, calc_Y] = device.Calculator();
 
     // open
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 11; i++) {
         client.tap(calc_X(175), calc_Y(410)).sleep(200);
     }
 
@@ -287,15 +283,14 @@ const MakeGoods = (device, slot = 0, number = 1, callback = null) => {
         .tap(calc_X(630), calc_Y(320))
         .sleep(500)
         .press("KEYCODE_BACK")
-        .sleep(1 * 1000)
-        .execute((err) => {
-            callback && callback();
-        });
+        .sleep(1 * 1000);
+
+    _Execute(client, callback);
 };
 
 const SellGoods = (device, slots = [], option = 1, callback = null) => {
     const [calc_X, calc_Y] = device.Calculator();
-    var client = device.client.multi();
+    let client = device.client.multi();
 
     // open
     client.tap(555, 340).sleep(1.5 * 1000);
@@ -312,14 +307,13 @@ const SellGoods = (device, slots = [], option = 1, callback = null) => {
         .press("KEYCODE_BACK")
         .sleep(100)
         .tap(calc_X(470), calc_Y(325))
-        .sleep(500)
-        .execute((err) => {
-            callback && callback();
-        });
+        .sleep(500);
+
+    _Execute(client, callback);
 };
 
 const NextTrees = (device, number = 1, callback = null) => {
-    var client = device.client.multi();
+    let client = device.client.multi();
     const [calc_X, calc_Y] = device.Calculator();
 
     client.tap(calc_X(300), calc_Y(380)).sleep(1.5 * 1000);
@@ -328,16 +322,13 @@ const NextTrees = (device, number = 1, callback = null) => {
         client.tap(calc_X(325), calc_Y(305)).sleep(500);
     }
 
-    client
-        .press("KEYCODE_BACK")
-        .sleep(500)
-        .execute((err) => {
-            callback && callback();
-        });
+    client.press("KEYCODE_BACK").sleep(500);
+
+    _Execute(client, callback);
 }
 
 const PrevTrees = (device, number = 1, callback = null) => {
-    var client = device.client.multi();
+    let client = device.client.multi();
     const [calc_X, calc_Y] = device.Calculator();
 
     client.tap(calc_X(300), calc_Y(380)).sleep(1.5 * 1000);
@@ -346,12 +337,9 @@ const PrevTrees = (device, number = 1, callback = null) => {
         client.tap(calc_X(80), calc_Y(305)).sleep(500);
     }
 
-    client
-        .press("KEYCODE_BACK")
-        .sleep(500)
-        .execute((err) => {
-            callback && callback();
-        });
+    client.press("KEYCODE_BACK").sleep(500);
+
+    _Execute(client, callback);
 }
 
 module.exports = {

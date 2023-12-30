@@ -66,6 +66,11 @@ const MakeSlotList = [
     { x: 485, y: 130 },
 ]
 
+const AutoOptions = {
+    PlantEventTree: "PlantEventTree",
+    ProduceAndSellItems: "ProduceAndSellItems",
+}
+
 module.exports = {
     SellSlotList,
     PlantSlotList,
@@ -76,4 +81,5 @@ module.exports = {
     DefaultBasket,
     DefaultProduct,
     SellOptions,
+    AutoOptions,
 };
