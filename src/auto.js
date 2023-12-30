@@ -7,10 +7,11 @@ const Client = ADB.createClient();
 const { AutoOptions } = require("./constants");
 
 class Device {
-    constructor(id, client, size) {
+    constructor(id, monkey, vmSize) {
         this.id = id;
-        this.client = client;
-        this.size = size;
+        this.monkey = monkey;
+        this.client = monkey.multi();
+        this.size = Helpers.getSize(vmSize.toString());
     }
 
     Calculator() {
@@ -20,8 +21,7 @@ class Device {
     }
 
     RunAuto(gameOptions = {}) {
-        const { runAuto, hasEventTrees, resetAfterLoops, hasOpenGame } =
-            gameOptions;
+        const { runAuto, hasEventTrees, resetAfterLoops, hasOpenGame } = gameOptions;
         const RESET_AFTER_LOOPS = resetAfterLoops > 0 ? resetAfterLoops : 1;
 
         hasOpenGame && Scripts.OpenGame(this);
@@ -37,12 +37,15 @@ class Device {
                     break;
             }
         }
-        this.Close();
+        this.Execute();
     }
 
-    Close() {
-        Scripts.Sleep(this, 0.5, () => {
-            this.client.end();
+    Execute() {
+        this.client.execute((err) => {
+            if (err) {
+                console.log(err);
+            }
+            this.monkey.end();
         });
     }
 
@@ -92,27 +95,22 @@ class Device {
     }
 }
 
-const Main = (gameOptions = {}, excludeDevices = []) => {
-    Client.listDevices().then((devices) =>
-        Promise.map(
-            devices.filter((device) => !excludeDevices.includes(device.id)),
-            (device) =>
-                Client
-                    .shell(device.id, "kill $(pgrep monkey)")
-                    .then(() => Client.shell(device.id, "wm size"))
-                    .then(ADB.util.readAll)
-                    .then((output) =>
-                        Client.openMonkey(device.id).then((monkey) => {
-                            let runningDevice = new Device(
-                                device.id,
-                                monkey,
-                                Helpers.getSize(output.toString())
-                            );
-                            runningDevice.RunAuto(gameOptions);
-                        })
-                    )
-        )
-    );
+const Main = async (gameOptions = {}, excludeDevices = []) => {
+    let listDevices = await Client.listDevices().then((devices) => devices.filter((device) => !excludeDevices.includes(device.id)));;
+
+    return Promise.map(
+        listDevices,
+        async (device) => {
+            // kill all process monkey
+            await Client.shell(device.id, "kill $(pgrep monkey)");
+
+            let vmSize = await Client.shell(device.id, "wm size").then(ADB.util.readAll);
+            let monkey = await Client.openMonkey(device.id);
+            let runningDevice = new Device(device.id, monkey, vmSize);
+
+            runningDevice.RunAuto(gameOptions);
+        }
+    )
 };
 
 //Run Main Function
