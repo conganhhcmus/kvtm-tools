@@ -25,6 +25,8 @@ app.use(express.json())
 
 app.post('/start', function (req, res) {
     fs.writeFileSync('logs/info.txt', '--- Welcome to KVTM Tools ---\n')
+    fs.writeFileSync('logs/err.txt', '')
+    fs.writeFileSync('logs/out.txt', '')
     state = { ...state, ...req.body, isRunning: true }
 
     Loops(state.gameOptions.frequency)
@@ -60,7 +62,7 @@ app.get('/init', async function (req, res) {
 })
 
 app.listen(port, function () {
-    console.log('Your app running on port ' + port)
+    console.log('Your app running on http://localhost:' + port)
 })
 
 const runShell = async (command) => {
@@ -97,6 +99,6 @@ const Loops = async (num) => {
         await startAuto()
     }
     if (!state.isRunning) return
-    state.isRunning = false
     fs.appendFileSync('logs/info.txt', 'Exist!!!\n')
+    state.isRunning = false
 }

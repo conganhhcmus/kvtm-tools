@@ -61,13 +61,13 @@ const CreateDevice = async (device) => {
     return new Device(device.id, monkey, vmSize)
 }
 
-const Main = async (openGame = false, state = {}) => {
+const Main = async (openGame = 'false', state = {}) => {
     const { gameOptions, listRunningDevice } = state
     let listDevices = await Client.listDevices().then((devices) => devices.filter((device) => listRunningDevice.includes(device.id)))
 
     return Promise.map(listDevices, async (device) => {
         let runningDevice = await CreateDevice(device)
-        return openGame ? runningDevice.OpenGame(gameOptions) : runningDevice.RunAuto(gameOptions)
+        return openGame == 'true' ? runningDevice.OpenGame(gameOptions) : runningDevice.RunAuto(gameOptions)
     })
 }
 
