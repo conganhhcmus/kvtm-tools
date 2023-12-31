@@ -1,4 +1,5 @@
 let isRunning = false
+let timer = 0
 
 $('#start').click(StartAuto)
 
@@ -6,8 +7,17 @@ $('#stop').click(StopAuto)
 
 $('#clear').click(ClearLogs)
 
+$('#fetch').click(GetLogs)
+
 function ClearLogs() {
-    $('#logs').val('')
+    $.ajax({
+        type: 'POST',
+        url: '/clear',
+        datatype: 'json',
+        success: function (response) {
+            GetLogs()
+        },
+    })
 }
 
 function UpdateButton() {
@@ -35,6 +45,7 @@ function StartAuto() {
         success: function (response) {
             isRunning = true
             UpdateButton()
+            GetLogs()
         },
     })
 }
@@ -48,6 +59,7 @@ function StopAuto() {
         success: function (response) {
             isRunning = false
             UpdateButton()
+            GetLogs()
         },
     })
 }
@@ -62,7 +74,7 @@ function GetInitData() {
             let result = JSON.parse(response)
             isRunning = result.isRunning
             InitListDevices(result.listDevices, result.listRunningDevice)
-            InitListAutoFuc(result.autoFunc, result.runningAutoFunc)
+            InitListAutoFuc(result.autoFunc, result.gameOptions.runAuto)
             SetGameOptions(result.gameOptions)
             UpdateButton()
         },
@@ -75,7 +87,11 @@ function InitListDevices(listDevices, listRunningDevice) {
         $('.selectpicker').append(`<option value="${device}">${device}</option>`)
     })
 
-    $('#listDevices select').val(listRunningDevice)
+    if (listRunningDevice && listRunningDevice.length > 0) {
+        $('#listDevices select').val(listRunningDevice)
+    } else {
+        $('#listDevices select').val(listDevices)
+    }
 }
 
 function InitListAutoFuc(autoFunc, runningAutoFunc) {
@@ -109,6 +125,7 @@ function SetGameOptions(gameOptions) {
 }
 
 function GetLogs() {
+    timer = 60
     $.ajax({
         type: 'GET',
         url: '/logs',
@@ -119,10 +136,23 @@ function GetLogs() {
     })
 }
 
+function IntervalEvent() {
+    if (timer <= 0) {
+        GetLogs()
+    }
+    timer--
+    $('#fetch').html(
+        `<i class="fa fa-refresh mr-2" aria-hidden="true"></i>${timer.toLocaleString('en-US', {
+            minimumIntegerDigits: 2,
+            useGrouping: false,
+        })}s`
+    )
+}
+
 function Init() {
     GetInitData()
-    setInterval(GetLogs, 60 * 1000)
-    GetLogs()
+    setInterval(IntervalEvent, 1 * 1000)
+    IntervalEvent()
 }
 
 Init()

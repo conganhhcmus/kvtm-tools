@@ -1,14 +1,13 @@
 .navbar {
     justify-content: space-evenly;
-    background-color: burlywood;
-    color: gray;
+    background-color: cornflowerblue;
+    color: whitesmoke;
     margin-bottom: 20px;
 }
 
 .footer {
     background-color: rgba(0, 0, 0, 0.05);
     display: flex;
-    background-color: rgba(0, 0, 0, 0.05);
     flex-direction: row;
     justify-content: space-between;
     align-content: stretch;
@@ -19,7 +18,3 @@ input[type="number"] {
     border: 1px solid;
     border-color: grey;
 }
-
-.content-left {}
-
-.content-right {}

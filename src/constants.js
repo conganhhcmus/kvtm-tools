@@ -66,11 +66,6 @@ const MakeSlotList = [
     { x: 485, y: 130 },
 ]
 
-const AutoOptions = {
-    PlantEventTree: 'PlantEventTree',
-    ProduceAndSellItems: 'ProduceAndSellItems',
-}
-
 const AutoFuncOptions = [
     { key: 'ProduceAndSellItems', name: 'Produce And Sell Items' },
     { key: 'PlantEventTree', name: 'Plant Event Tree' },
@@ -86,6 +81,5 @@ module.exports = {
     DefaultBasket,
     DefaultProduct,
     SellOptions,
-    AutoOptions,
     AutoFuncOptions,
 }

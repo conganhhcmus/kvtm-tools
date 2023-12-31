@@ -1,10 +1,10 @@
 const Promise = require('bluebird')
 const ADB = require('adbkit')
-const Helpers = require('./helpers')
+const Helpers = require('../helpers')
 const Client = ADB.createClient()
-const AutoFunc = require('./modules/autoFunc')
+const AutoFunc = require('./auto')
 
-const { AutoOptions } = require('./constants')
+const { AutoFuncOptions } = require('../constants')
 
 class Device {
     constructor(id, monkey, vmSize) {
@@ -21,22 +21,27 @@ class Device {
     }
 
     RunAuto(gameOptions = {}) {
-        const { resetAfterLoops, runAuto, hasEventTrees, hasOpenGame } = gameOptions
-        const RESET_AFTER_LOOPS = resetAfterLoops > 0 ? resetAfterLoops : 1
+        const { runAuto, hasEventTrees } = gameOptions
 
-        hasOpenGame && AutoFunc.OpenGame(this)
+        switch (runAuto) {
+            case AutoFuncOptions[0].key:
+                AutoFunc.ProduceAndSellItems(this, hasEventTrees)
+                break
 
-        for (let i = 0; i < RESET_AFTER_LOOPS; i++) {
-            switch (runAuto) {
-                case AutoOptions.PlantEventTree:
-                    AutoFunc.PlantEventTree(this)
-                    break
+            case AutoFuncOptions[1].key:
+                AutoFunc.PlantEventTree(this)
+                break
 
-                default:
-                    AutoFunc.ProduceAndSellItems(this, hasEventTrees)
-                    break
-            }
+            default:
+                break
         }
+
+        AutoFunc.Execute(this)
+    }
+
+    OpenGame(gameOptions = {}) {
+        const { hasOpenGame } = gameOptions
+        hasOpenGame && AutoFunc.OpenGame(this)
 
         AutoFunc.Execute(this)
     }
@@ -56,14 +61,15 @@ const CreateDevice = async (device) => {
     return new Device(device.id, monkey, vmSize)
 }
 
-const Main = async (gameOptions = {}, excludeDevices = []) => {
-    let listDevices = await Client.listDevices().then((devices) => devices.filter((device) => !excludeDevices.includes(device.id)))
+const Main = async (openGame = false, state = {}) => {
+    const { gameOptions, listRunningDevice } = state
+    let listDevices = await Client.listDevices().then((devices) => devices.filter((device) => listRunningDevice.includes(device.id)))
 
     return Promise.map(listDevices, async (device) => {
         let runningDevice = await CreateDevice(device)
-        return runningDevice.RunAuto(gameOptions)
+        return openGame ? runningDevice.OpenGame(gameOptions) : runningDevice.RunAuto(gameOptions)
     })
 }
 
 //Run Main Function
-Main(JSON.parse(process.argv[2]), JSON.parse(process.argv[3]))
+Main(process.argv[2], JSON.parse(process.argv[3]))
