@@ -1,0 +1,28 @@
+[
+  'emulator-5554',
+  '',
+  'nohup: //nohup.out: Read-only file system\n',
+  'true'
+]
+[
+  'emulator-5556',
+  '',
+  'nohup: //nohup.out: Read-only file system\n',
+  'true'
+]
+[ 'emulator-5556', '', '', 'true' ]
+[
+  'emulator-5554',
+  '',
+  'nohup: //nohup.out: Read-only file system\n',
+  'true'
+]
+[ 'emulator-5554', '', '', 'true' ]
+[ 'emulator-5556', '', '', 'true' ]
+[
+  'emulator-5554',
+  '',
+  'nohup: //nohup.out: Read-only file system\n',
+  'true'
+]
+[ 'emulator-5556', '', '', 'true' ]
