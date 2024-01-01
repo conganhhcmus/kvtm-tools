@@ -1,13 +1,4 @@
-const {
-    SellSlotList,
-    PlantSlotList,
-    MakeSlotList,
-    FirstRowSlotList,
-    SecondRowSlotList,
-    DefaultBasket,
-    DefaultProduct,
-    SellOptions,
-} = require('../constants')
+const { SellSlotList, PlantSlotList, MakeSlotList, FirstRowSlotList, SecondRowSlotList, DefaultBasket, DefaultProduct, SellOptions } = require('../constants')
 
 //#region private function
 const _Move = (client, pointA, pointB, steps = 1) => {
@@ -18,21 +9,13 @@ const _Move = (client, pointA, pointB, steps = 1) => {
 
     for (let i = 0; i < steps; i++) {
         if (pointA.x <= pointB.x && pointA.y <= pointB.y) {
-            client
-                .touchMove(pointA.x + i * distance_x, pointA.y + i * distance_y)
-                .sleep(5)
+            client.touchMove(pointA.x + i * distance_x, pointA.y + i * distance_y).sleep(5)
         } else if (pointA.x >= pointB.x && pointA.y <= pointB.y) {
-            client
-                .touchMove(pointA.x - i * distance_x, pointA.y + i * distance_y)
-                .sleep(5)
+            client.touchMove(pointA.x - i * distance_x, pointA.y + i * distance_y).sleep(5)
         } else if (pointA.x <= pointB.x && pointA.y >= pointB.y) {
-            client
-                .touchMove(pointA.x + i * distance_x, pointA.y - i * distance_y)
-                .sleep(5)
+            client.touchMove(pointA.x + i * distance_x, pointA.y - i * distance_y).sleep(5)
         } else {
-            client
-                .touchMove(pointA.x - i * distance_x, pointA.y - i * distance_y)
-                .sleep(5)
+            client.touchMove(pointA.x - i * distance_x, pointA.y - i * distance_y).sleep(5)
         }
     }
 }
@@ -69,12 +52,7 @@ const _plantBySlot = (client, calc, slot) => {
 
     client.touchDown(calc_X(x), calc_Y(y)).sleep(5)
 
-    _Move(
-        client,
-        { x: calc_X(x), y: calc_Y(y) },
-        { x: calc_X(FirstRowSlotList[0].x), y: calc_Y(FirstRowSlotList[0].y) },
-        5
-    )
+    _Move(client, { x: calc_X(x), y: calc_Y(y) }, { x: calc_X(FirstRowSlotList[0].x), y: calc_Y(FirstRowSlotList[0].y) }, 5)
 
     // floor 1
     for (let i = 0; i < FirstRowSlotList.length - 1; i++) {
@@ -121,12 +99,7 @@ const _plantBySlot = (client, calc, slot) => {
         )
     }
 
-    client
-        .touchUp(
-            calc_X(SecondRowSlotList[SecondRowSlotList.length - 1].x),
-            calc_Y(SecondRowSlotList[SecondRowSlotList.length - 1].y)
-        )
-        .sleep(500)
+    client.touchUp(calc_X(SecondRowSlotList[SecondRowSlotList.length - 1].x), calc_Y(SecondRowSlotList[SecondRowSlotList.length - 1].y)).sleep(500)
 }
 
 const _makeGoodsBySlot = (client, calc, slot = 0, number = 1) => {
@@ -136,12 +109,7 @@ const _makeGoodsBySlot = (client, calc, slot = 0, number = 1) => {
 
     for (let i = 0; i < number; i++) {
         client.touchDown(x, y).sleep(5)
-        _Move(
-            client,
-            { x: calc_X(x), y: calc_Y(y) },
-            { x: calc_X(produce_x), y: calc_Y(produce_y) },
-            5
-        )
+        _Move(client, { x: calc_X(x), y: calc_Y(y) }, { x: calc_X(produce_x), y: calc_Y(produce_y) }, 5)
         client.touchUp(produce_x, produce_y).sleep(500)
     }
 }
@@ -215,30 +183,15 @@ const OpenGame = (device) => {
     client.press('KEYCODE_APP_SWITCH').sleep(500)
     // close app
     client.touchDown(calc_X(400), calc_Y(300)).sleep(5)
-    _Move(
-        client,
-        { x: calc_X(400), y: calc_Y(300) },
-        { x: calc_X(400), y: calc_Y(0) },
-        10
-    )
+    _Move(client, { x: calc_X(400), y: calc_Y(300) }, { x: calc_X(400), y: calc_Y(0) }, 10)
     client.touchUp(calc_X(400), calc_Y(0)).sleep(500)
     // close app
     client.touchDown(calc_X(400), calc_Y(300)).sleep(5)
-    _Move(
-        client,
-        { x: calc_X(400), y: calc_Y(300) },
-        { x: calc_X(400), y: calc_Y(0) },
-        10
-    )
+    _Move(client, { x: calc_X(400), y: calc_Y(300) }, { x: calc_X(400), y: calc_Y(0) }, 10)
     client.touchUp(calc_X(400), calc_Y(0)).sleep(500)
     // close app
     client.touchDown(calc_X(400), calc_Y(300)).sleep(5)
-    _Move(
-        client,
-        { x: calc_X(400), y: calc_Y(300) },
-        { x: calc_X(400), y: calc_Y(0) },
-        10
-    )
+    _Move(client, { x: calc_X(400), y: calc_Y(300) }, { x: calc_X(400), y: calc_Y(0) }, 10)
     client.touchUp(calc_X(400), calc_Y(0)).sleep(500)
 
     // open game
@@ -277,12 +230,7 @@ const HarvestTrees = (device) => {
 
     client.touchDown(calc_X(x), calc_Y(y)).sleep(5)
 
-    _Move(
-        client,
-        { x: calc_X(x), y: calc_Y(y) },
-        { x: calc_X(FirstRowSlotList[0].x), y: calc_Y(FirstRowSlotList[0].y) },
-        5
-    )
+    _Move(client, { x: calc_X(x), y: calc_Y(y) }, { x: calc_X(FirstRowSlotList[0].x), y: calc_Y(FirstRowSlotList[0].y) }, 5)
 
     // floor 1
     for (let i = 0; i < FirstRowSlotList.length - 1; i++) {
@@ -329,27 +277,14 @@ const HarvestTrees = (device) => {
         )
     }
 
-    client
-        .touchUp(
-            calc_X(SecondRowSlotList[SecondRowSlotList.length - 1].x),
-            calc_Y(SecondRowSlotList[SecondRowSlotList.length - 1].y)
-        )
-        .sleep(500)
+    client.touchUp(calc_X(SecondRowSlotList[SecondRowSlotList.length - 1].x), calc_Y(SecondRowSlotList[SecondRowSlotList.length - 1].y)).sleep(500)
 }
 
 const BackToGame = (device) => {
     const [calc_X, calc_Y] = device.Calculator()
     let client = device.client
 
-    client
-        .press('KEYCODE_BACK')
-        .sleep(100)
-        .press('KEYCODE_BACK')
-        .sleep(100)
-        .press('KEYCODE_BACK')
-        .sleep(100)
-        .tap(calc_X(470), calc_Y(325))
-        .sleep(500)
+    client.press('KEYCODE_BACK').sleep(100).press('KEYCODE_BACK').sleep(100).press('KEYCODE_BACK').sleep(100).tap(calc_X(470), calc_Y(325)).sleep(500)
 }
 
 const PlantTrees = (device, slot = 0) => {
@@ -397,15 +332,7 @@ const SellGoods = (device, slots = [], option = 1) => {
     _sellBySlot(client, [calc_X, calc_Y], slots, option)
 
     // close
-    client
-        .press('KEYCODE_BACK')
-        .sleep(100)
-        .press('KEYCODE_BACK')
-        .sleep(100)
-        .press('KEYCODE_BACK')
-        .sleep(100)
-        .tap(calc_X(470), calc_Y(325))
-        .sleep(500)
+    client.press('KEYCODE_BACK').sleep(100).press('KEYCODE_BACK').sleep(100).press('KEYCODE_BACK').sleep(100).tap(calc_X(470), calc_Y(325)).sleep(500)
 }
 
 const NextTrees = (device, number = 1) => {
@@ -435,7 +362,7 @@ const PrevTrees = (device, number = 1) => {
 }
 
 const Execute = (device) => {
-    device.client.execute((err) => {
+    device.client.sleep(5).execute((err) => {
         if (err) {
             console.error(err)
         }

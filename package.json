@@ -2,9 +2,9 @@
   "name": "adbkit-monkey",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "auto": "node src/index.js"
+    "app": "node src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +12,7 @@
   "devDependencies": {
     "adbkit": "^2.0.17",
     "bluebird": "^3.7.2",
+    "express": "^4.18.2",
     "forever-monitor": "^3.0.3",
     "moment": "^2.29.4"
   }
