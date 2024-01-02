@@ -1,4 +1,4 @@
-const Scripts = require('./scripts')
+const Scripts = require('./base')
 
 const OpenGame = (device) => {
     Scripts.OpenGame(device)

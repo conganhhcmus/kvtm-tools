@@ -1,4 +1,4 @@
-const { SellSlotList, PlantSlotList, MakeSlotList, FirstRowSlotList, SecondRowSlotList, DefaultBasket, DefaultProduct, SellOptions } = require('../constants')
+const { SellSlotList, PlantSlotList, MakeSlotList, FirstRowSlotList, SecondRowSlotList, DefaultBasket, DefaultProduct, SellOptions } = require('./const')
 
 //#region private function
 const _Move = (client, pointA, pointB, steps = 1) => {

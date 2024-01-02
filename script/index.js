@@ -1,10 +1,10 @@
 const Promise = require('bluebird')
 const ADB = require('adbkit')
-const Helpers = require('../helpers')
+const Helpers = require('./util')
 const Client = ADB.createClient()
-const AutoFunc = require('./auto')
+const AutoFunc = require('./func')
 
-const { AutoFuncOptions } = require('../constants')
+const { AutoFuncOptions } = require('../src/constants')
 
 class Device {
     constructor(id, monkey, vmSize) {
