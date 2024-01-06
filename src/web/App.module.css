@@ -1,0 +1,28 @@
+.header {
+    display: 'flex';
+    align-items: 'center';
+    background-color: cornflowerblue;
+    color: whitesmoke;
+    text-align: center;
+    justify-content: center;
+    height: fit-content;
+}
+
+.content {
+    padding: 0 5% 20px;
+    background-color: white;
+}
+
+@media only screen and (min-width: 900px) {
+    .content {
+        padding: 0 10% 20px;
+    }
+}
+
+.footer {
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
