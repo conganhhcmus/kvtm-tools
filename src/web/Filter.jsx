@@ -1,6 +1,6 @@
 const moment = require('moment')
 import React, { useEffect, useState } from "react";
-import { Col, Row, Select, Flex } from "antd";
+import { Col, Row, Select, Flex, notification } from "antd";
 import GameOptionsFilter from './gameFilter'
 import styles from "./Filter.module.css"
 import axios from 'axios';
@@ -10,6 +10,15 @@ const Filter = (props) => {
     const [selectedGame, setSelectedGame] = useState('');
     const [devicesOption, setDevicesOption] = useState([]);
     const [listGameOption, setListGameOption] = useState([]);
+
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (title, message) => {
+        api.error({
+            message: title,
+            description: message,
+            duration: 2
+        });
+    };
 
     const refreshSettings = () => {
         axios.get('/api/settings').then(function (response) {
@@ -34,8 +43,7 @@ const Filter = (props) => {
 
     const runAuto = (gameOptions) => {
         if (selectedDevices.length <= 0) {
-            alert('No devices selected!');
-            return;
+            return openNotification('Error Message', 'Please select device!');
         }
         let payload = {
             selectedDevices,
@@ -50,6 +58,7 @@ const Filter = (props) => {
     }
 
     return <>
+        {contextHolder}
         <Row gutter={[40, 0]}>
             <Col xs={24} xl={8}>
                 <h3>Settings</h3>
