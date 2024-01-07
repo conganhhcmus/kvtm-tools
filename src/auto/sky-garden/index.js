@@ -33,10 +33,15 @@ class Device {
                 break
 
             case auto[2].key:
-                AutoFunc.PlantEventTree(this)
+                AutoFunc.ProduceAndSellItems_3(this, hasEventTree)
+                break
+
+            case auto[3].key:
+                AutoFunc.ProduceAndSellItems_4(this, hasEventTree)
                 break
 
             default:
+                AutoFunc.PlantEventTree(this)
                 break
         }
 

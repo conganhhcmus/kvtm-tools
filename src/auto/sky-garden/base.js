@@ -35,6 +35,105 @@ const _sellBySlot = (client, calc, slots = [], option = 1) => {
             .sleep(500)
             .tap(calc_X(70), calc_Y(130))
             .sleep(500)
+            // increase price
+            .tap(calc_X(660), calc_Y(270))
+            .sleep(5)
+            .tap(calc_X(660), calc_Y(270))
+            .sleep(5)
+            .tap(calc_X(660), calc_Y(270))
+            .sleep(5)
+            .tap(calc_X(660), calc_Y(270))
+            .sleep(5)
+            .tap(calc_X(660), calc_Y(270))
+            .sleep(5)
+            .tap(calc_X(660), calc_Y(270))
+            .sleep(5)
+            .tap(calc_X(660), calc_Y(270))
+            .sleep(5)
+            .tap(calc_X(660), calc_Y(270))
+            .sleep(5)
+            .tap(calc_X(660), calc_Y(270))
+            .sleep(5)
+            .tap(calc_X(660), calc_Y(270))
+            .sleep(500)
+            // stop increase price
+            .tap(calc_X(590), calc_Y(410))
+            .sleep(500)
+            .tap(calc_X(400), calc_Y(420))
+            .sleep(500)
+            .tap(calc_X(500), calc_Y(35))
+            .sleep(500)
+    })
+}
+
+const _sellFullSlot = (client, calc, option = 1) => {
+    const [calc_X, calc_Y] = calc
+    const { x: option_x, y: option_y } = SellOptions[option]
+    const slotA = [0, 1, 2, 3, 4, 5, 6, 7]
+    const slotB = [0, 1, 2, 3, 4, 5, 6, 7]
+    const slotC = [1, 2, 5, 6]
+
+    slotA.forEach((slot) => {
+        const { x, y } = SellSlotList[slot]
+        client
+            .tap(calc_X(x), calc_Y(y))
+            .sleep(500)
+            .tap(calc_X(x), calc_Y(y))
+            .sleep(500)
+            .tap(calc_X(option_x), calc_Y(option_y))
+            .sleep(500)
+            .tap(calc_X(70), calc_Y(130))
+            .sleep(500)
+            .tap(calc_X(660), calc_Y(270))
+            .sleep(500)
+            .tap(calc_X(590), calc_Y(410))
+            .sleep(500)
+            .tap(calc_X(400), calc_Y(420))
+            .sleep(500)
+            .tap(calc_X(500), calc_Y(35))
+            .sleep(500)
+    })
+
+    client.touchDown(calc_X(630), calc_Y(270)).sleep(5)
+    _Move(client, { x: calc_X(630), y: calc_Y(270) }, { x: calc_X(130), y: calc_Y(270) }, 500)
+    client.touchUp(calc_X(130), calc_Y(270)).sleep(500)
+
+    slotB.forEach((slot) => {
+        const { x, y } = SellSlotList[slot]
+        client
+            .tap(calc_X(x), calc_Y(y))
+            .sleep(500)
+            .tap(calc_X(x), calc_Y(y))
+            .sleep(500)
+            .tap(calc_X(option_x), calc_Y(option_y))
+            .sleep(500)
+            .tap(calc_X(70), calc_Y(130))
+            .sleep(500)
+            .tap(calc_X(660), calc_Y(270))
+            .sleep(500)
+            .tap(calc_X(590), calc_Y(410))
+            .sleep(500)
+            .tap(calc_X(400), calc_Y(420))
+            .sleep(500)
+            .tap(calc_X(500), calc_Y(35))
+            .sleep(500)
+    })
+
+    client.touchDown(calc_X(630), calc_Y(270)).sleep(5)
+    _Move(client, { x: calc_X(630), y: calc_Y(270) }, { x: calc_X(130), y: calc_Y(270) }, 500)
+    client.touchUp(calc_X(130), calc_Y(270)).sleep(500)
+
+    slotC.forEach((slot) => {
+        const { x, y } = SellSlotList[slot]
+        client
+            .tap(calc_X(x), calc_Y(y))
+            .sleep(500)
+            .tap(calc_X(x), calc_Y(y))
+            .sleep(500)
+            .tap(calc_X(option_x), calc_Y(option_y))
+            .sleep(500)
+            .tap(calc_X(70), calc_Y(130))
+            .sleep(500)
             .tap(calc_X(660), calc_Y(270))
             .sleep(500)
             .tap(calc_X(590), calc_Y(410))
@@ -321,6 +420,30 @@ const MakeGoods = (device, slot = 0, number = 1) => {
         .sleep(1 * 1000)
 }
 
+const MakeGoods_2 = (device, slot = 0, number = 1) => {
+    let client = device.client
+    const [calc_X, calc_Y] = device.Calculator()
+
+    // open
+    for (let i = 0; i < 10; i++) {
+        client.tap(calc_X(175), calc_Y(200)).sleep(200)
+    }
+
+    client.sleep(1.5 * 1000)
+
+    // make goods
+    _makeGoodsBySlot(client, [calc_X, calc_Y], slot, number)
+
+    // fix & close
+    client
+        .tap(calc_X(80), calc_Y(110))
+        .sleep(500)
+        .tap(calc_X(630), calc_Y(320))
+        .sleep(500)
+        .press('KEYCODE_BACK')
+        .sleep(1 * 1000)
+}
+
 const SellGoods = (device, slots = [], option = 1) => {
     const [calc_X, calc_Y] = device.Calculator()
     let client = device.client
@@ -330,6 +453,20 @@ const SellGoods = (device, slots = [], option = 1) => {
 
     //sell by slots
     _sellBySlot(client, [calc_X, calc_Y], slots, option)
+
+    // close
+    client.press('KEYCODE_BACK').sleep(100).press('KEYCODE_BACK').sleep(100).press('KEYCODE_BACK').sleep(100).tap(calc_X(470), calc_Y(325)).sleep(500)
+}
+
+const SellFullGoods = (device, option = 1) => {
+    const [calc_X, calc_Y] = device.Calculator()
+    let client = device.client
+
+    // open
+    client.tap(555, 340).sleep(1.5 * 1000)
+
+    //sell by slots
+    _sellFullSlot(client, [calc_X, calc_Y], option)
 
     // close
     client.press('KEYCODE_BACK').sleep(100).press('KEYCODE_BACK').sleep(100).press('KEYCODE_BACK').sleep(100).tap(calc_X(470), calc_Y(325)).sleep(500)
@@ -374,6 +511,7 @@ module.exports = {
     Sleep,
     OpenGame,
     MakeGoods,
+    MakeGoods_2,
     SellGoods,
     PlantTrees,
     HarvestTrees,
@@ -384,4 +522,5 @@ module.exports = {
     NextTrees,
     PrevTrees,
     Execute,
+    SellFullGoods,
 }
