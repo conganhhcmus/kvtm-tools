@@ -4,7 +4,8 @@ const OpenGame = (device) => {
     Scripts.OpenGame(device)
 }
 
-const ProduceAndSellItems = (device, hasEventTree) => {
+// Cao vai tim
+const ProduceAndSellItems_2 = (device, hasEventTree) => {
     const NUMBER_OF_MAKE_GOODS = 2 * 10
 
     for (let k = 0; k < NUMBER_OF_MAKE_GOODS; k++) {
@@ -36,6 +37,33 @@ const ProduceAndSellItems = (device, hasEventTree) => {
     Scripts.SellGoods(device, [0, 1, 2, 3, 4, 5, 6, 7], 1)
 }
 
+// Cao vai do
+const ProduceAndSellItems_1 = (device, hasEventTree) => {
+    const NUMBER_OF_MAKE_GOODS = 2 * 10
+
+    for (let k = 0; k < NUMBER_OF_MAKE_GOODS; k++) {
+        // Floor 1
+        Scripts.GoUp(device)
+        Scripts.HarvestTrees(device)
+        Scripts.PlantTrees(device, 2)
+        Scripts.MakeGoods(device, 0, 4)
+
+        // Floor 3
+        Scripts.GoUp(device, 2)
+        Scripts.HarvestTrees(device)
+        Scripts.PlantTrees(device, 0)
+        Scripts.MakeGoods(device, 0, 4)
+
+        // Go Down
+        Scripts.BackToGame(device)
+        Scripts.GoDownLast(device)
+        if (k < NUMBER_OF_MAKE_GOODS - 1) Scripts.Sleep(device, 12)
+    }
+
+    // Sell Goods
+    Scripts.SellGoods(device, [0, 1, 2, 3, 4, 5, 6, 7], 1)
+}
+
 const PlantEventTree = (device) => {
     Scripts.GoUp(device)
 
@@ -56,7 +84,8 @@ const Execute = (device) => {
 
 module.exports = {
     OpenGame,
-    ProduceAndSellItems,
+    ProduceAndSellItems_1,
+    ProduceAndSellItems_2,
     PlantEventTree,
     Execute,
 }

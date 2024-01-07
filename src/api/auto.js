@@ -60,12 +60,15 @@ const startAuto = async (payload) => {
     // clear old logs
     logs = logs.filter((log) => !selectedDevices.includes(log.device))
     logs = logs.concat(selectedDevices.map((device) => ({ device: device, logs: '' })))
+    fs.writeFileSync(path.resolve(__dirname, '../data/logs.json'), JSON.stringify(logs))
 
     let logDevices = logs.filter((x) => selectedDevices.includes(x.device))
     let command = ''
     for (let i = 0; i < frequency; i++) {
         // write logs
-        logDevices = getDeviceLogs(logDevices, selectedDevices)
+        logs = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/logs.json'), 'utf8'))
+        logDevices = getDeviceLogs(selectedDevices, logs)
+
         logDevices.forEach((logDevice) => (logDevice.logs += 'Run ' + (i + 1) + ' times at ' + moment().format('LTS') + '\n'))
         fs.writeFileSync(path.resolve(__dirname, '../data/logs.json'), JSON.stringify(logs))
 
@@ -80,8 +83,11 @@ const startAuto = async (payload) => {
         await runShell(command)
     }
     // write logs
+    logs = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/logs.json'), 'utf8'))
+    logDevices = getDeviceLogs(selectedDevices, logs)
     logDevices.forEach((logDevice) => (logDevice.logs += 'Exist!!!\n'))
     fs.writeFileSync(path.resolve(__dirname, '../data/logs.json'), JSON.stringify(logs))
+
     // remove running list
     let data = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/data.json'), 'utf8'))
     data = data.filter((x) => !selectedDevices.includes(x.device))
@@ -99,10 +105,20 @@ const getPayload = async (payload) => {
     }
 }
 
-const getDeviceLogs = (logDevices, selectedDevices) => {
+const getDeviceLogs = (selectedDevices, logs) => {
+    let logDevices = logs.filter((x) => selectedDevices.includes(x.device))
+    let listRunningDevice = getRunningDevices(selectedDevices)
+    let stoppedDevicesLog = logDevices.filter((log) => !listRunningDevice.includes(log.device))
+    stoppedDevicesLog.forEach((logDevice) => {
+        let logString = logDevice.logs.replaceAll('Exist!!!\n', '') + 'Exist!!!\n'
+        logDevice.logs = logString
+    })
+
+    return logDevices.filter((log) => listRunningDevice.includes(log.device))
+}
+
+const getRunningDevices = (selectedDevices) => {
     let data = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/data.json'), 'utf8'))
     let listRunningDevice = data.filter((x) => selectedDevices.includes(x.device)).map((x) => x.device)
-    let stoppedDevicesLog = logDevices.filter((log) => !listRunningDevice.includes(log.device))
-    stoppedDevicesLog.forEach((logDevice) => (logDevice.logs += 'Exist!!!\n'))
-    return logDevices.filter((log) => listRunningDevice.includes(log.device))
+    return listRunningDevice
 }

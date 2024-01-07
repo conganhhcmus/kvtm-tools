@@ -1,5 +1,5 @@
 node_modules
-
+dist/
 # system file
 .vs
 .DS_Store

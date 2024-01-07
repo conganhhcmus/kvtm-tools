@@ -25,10 +25,14 @@ class Device {
 
         switch (runAuto) {
             case auto[0].key:
-                AutoFunc.ProduceAndSellItems(this, hasEventTree)
+                AutoFunc.ProduceAndSellItems_1(this, hasEventTree)
                 break
 
             case auto[1].key:
+                AutoFunc.ProduceAndSellItems_2(this, hasEventTree)
+                break
+
+            case auto[2].key:
                 AutoFunc.PlantEventTree(this)
                 break
 
