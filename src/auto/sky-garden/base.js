@@ -9,13 +9,13 @@ const _Move = (client, pointA, pointB, steps = 1) => {
 
     for (let i = 0; i < steps; i++) {
         if (pointA.x <= pointB.x && pointA.y <= pointB.y) {
-            client.touchMove(pointA.x + i * distance_x, pointA.y + i * distance_y).sleep(5)
+            client.touchMove(Math.floor(pointA.x + i * distance_x), Math.floor(pointA.y + i * distance_y)).sleep(5)
         } else if (pointA.x >= pointB.x && pointA.y <= pointB.y) {
-            client.touchMove(pointA.x - i * distance_x, pointA.y + i * distance_y).sleep(5)
+            client.touchMove(Math.floor(pointA.x - i * distance_x), Math.floor(pointA.y + i * distance_y)).sleep(5)
         } else if (pointA.x <= pointB.x && pointA.y >= pointB.y) {
-            client.touchMove(pointA.x + i * distance_x, pointA.y - i * distance_y).sleep(5)
+            client.touchMove(Math.floor(pointA.x + i * distance_x), Math.floor(pointA.y - i * distance_y)).sleep(5)
         } else {
-            client.touchMove(pointA.x - i * distance_x, pointA.y - i * distance_y).sleep(5)
+            client.touchMove(Math.floor(pointA.x - i * distance_x), Math.floor(pointA.y - i * distance_y)).sleep(5)
         }
     }
 }

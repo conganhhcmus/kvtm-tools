@@ -1,4 +1,5 @@
 import React from "react";
+import { Col } from "antd";
 import { listGameOption } from '../../const/game';
 import SkyGarden from "./SkyGarden";
 
@@ -9,7 +10,9 @@ const GameOptionsFilter = (props) => {
             return <SkyGarden {...props} />
 
         default:
-            return <h3>Don't support this game!</h3>
+            return <Col className="gutter-row" xs={24} sm={24} xl={16} xxl={16}>
+                <h3>Don't support this game!</h3>
+            </Col>
     }
 }
 

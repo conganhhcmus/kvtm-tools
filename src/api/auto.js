@@ -96,8 +96,7 @@ const startAuto = async (payload) => {
 
 const getPayload = async (payload) => {
     const { selectedDevices } = payload
-    let data = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/data.json'), 'utf8'))
-    let listRunningDevice = data.filter((x) => selectedDevices.includes(x.device)).map((x) => x.device)
+    let listRunningDevice = getRunningDevices(selectedDevices)
 
     return {
         ...payload,
@@ -107,18 +106,24 @@ const getPayload = async (payload) => {
 
 const getDeviceLogs = (selectedDevices, logs) => {
     let logDevices = logs.filter((x) => selectedDevices.includes(x.device))
-    let listRunningDevice = getRunningDevices(selectedDevices)
-    let stoppedDevicesLog = logDevices.filter((log) => !listRunningDevice.includes(log.device))
+    let listAllRunningDevice = getAllRunningDevices()
+    let stoppedDevicesLog = logDevices.filter((log) => !listAllRunningDevice.includes(log.device))
     stoppedDevicesLog.forEach((logDevice) => {
         let logString = logDevice.logs.replaceAll('Exist!!!\n', '') + 'Exist!!!\n'
         logDevice.logs = logString
     })
 
-    return logDevices.filter((log) => listRunningDevice.includes(log.device))
+    return logDevices.filter((log) => listAllRunningDevice.includes(log.device))
 }
 
 const getRunningDevices = (selectedDevices) => {
     let data = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/data.json'), 'utf8'))
     let listRunningDevice = data.filter((x) => selectedDevices.includes(x.device)).map((x) => x.device)
+    return listRunningDevice
+}
+
+const getAllRunningDevices = () => {
+    let data = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/data.json'), 'utf8'))
+    let listRunningDevice = data.map((x) => x.device)
     return listRunningDevice
 }

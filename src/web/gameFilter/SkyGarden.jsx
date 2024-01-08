@@ -39,16 +39,16 @@ const SkyGarden = (props) => {
     }
 
     return <>
-        <Col className="gutter-row" xs={24} xl={16}>
+        <Col className="gutter-row" xs={24} sm={24} xl={16} xxl={16}>
             <h3>Game Option</h3>
             <Row>
                 <Checkbox.Group style={{ width: '100%' }} onChange={onSelectedGameOption}>
                     <Row gutter={[40, 20]}>
-                        <Col className="gutter-row" xs={24} xl={12}>
+                        <Col className="gutter-row" xs={24} sm={24} xl={11} xxl={12}>
                             <Flex justify="space-between" gap="middle" align="center" vertical={false}>
                                 <label>Run Auto</label>
                                 <Select
-                                    style={{ width: '80%' }}
+                                    className={styles.selectAuto}
                                     showSearch
                                     placeholder="Search to Select"
                                     optionFilterProp="children"
@@ -65,27 +65,27 @@ const SkyGarden = (props) => {
                                 />
                             </Flex>
                         </Col>
-                        <Col className="gutter-row" xs={18} xl={12}>
+                        <Col className="gutter-row" xs={24} sm={18} xl={13} xxl={12}>
                             <Flex justify="space-between" gap="middle" align="center" vertical={false}>
                                 <Checkbox value="openGame">Open Game</Checkbox>
                                 <Checkbox value="hasEventTree">Has Event Tree</Checkbox>
                                 <Checkbox value="openChest">Open Chest</Checkbox>
                             </Flex>
                         </Col>
-                        <Col xs={8} xl={6}>
+                        <Col xs={12} sm={8} xl={8} xxl={7}>
                             <Flex gap="middle" align="center" vertical={false}>
                                 <label>Open Game After</label>
                                 <InputNumber disabled={!gameOption.includes('openGame')} className={styles.inputNumber} min={1} max={99} value={openGameAfter} onChange={value => setOpenGameAfter(value)} />
                             </Flex>
                         </Col>
-                        <Col xs={8} xl={5}>
+                        <Col xs={12} sm={8} xl={6} xxl={5}>
                             <Flex gap="middle" align="center" vertical={false}>
                                 <label>Frequency</label>
                                 <InputNumber className={styles.inputNumber} min={1} max={99} value={frequency} onChange={value => setFrequency(value)} />
                             </Flex>
                         </Col>
 
-                        <Col xs={6} xl={4}>
+                        <Col xs={6} sm={6} xl={4} xxl={4}>
                             <Button type="primary" loading={false} onClick={runAuto}>
                                 Run now!
                             </Button>

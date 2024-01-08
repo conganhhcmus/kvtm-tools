@@ -1,7 +1,8 @@
 const moment = require('moment')
 import React, { useEffect, useState } from "react";
-import { Divider, Table, Button, Flex, Space, Popover } from 'antd';
+import { Divider, Table, Button, Flex, Row, Col, Popover } from 'antd';
 import axios from "axios";
+import styles from './Table.module.css'
 
 const RunningTable = (props) => {
     const [runningDevice, setRunningDevice] = useState([]);
@@ -73,25 +74,37 @@ const RunningTable = (props) => {
         },
         {
             title: 'Action',
-            width: 300,
+            width: 250,
             dataIndex: '',
-            render: (text, record) => <Space>
-                <Button type="primary" danger onClick={() => stopDevice(record.key)}>
-                    Stop
-                </Button>
-                <Popover placement="leftBottom"
-                    content={<div dangerouslySetInnerHTML={{ __html: logContent }} />}
-                    title={`Log of ${record.key}`}
-                    trigger="click">
-                    <Button type="primary" onClick={() => viewLogsDevice(record.key)}>Logs</Button>
-                </Popover>
-                <Popover placement="leftBottom"
-                    content={gameOptionContent(record.gameOptions)}
-                    title={`Game Option of ${record.key}`}
-                    trigger="click">
-                    <Button type="primary">Detail</Button>
-                </Popover>
-            </Space >,
+            render: (text, record) => <Row gutter={[20, 20]} justify="center" type="flex">
+                <Col className="gutter-row" xs={24} sm={24} xl={8} xxl={8} style={{ textAlign: 'center' }}>
+                    <Button type="primary" danger onClick={() => stopDevice(record.key)}>
+                        Stop
+                    </Button>
+                </Col>
+                <Col className="gutter-row" xs={24} sm={24} xl={8} xxl={8} style={{ textAlign: 'center' }}>
+                    <Popover
+                        key={`log-${record.key}`}
+                        rootClassName={styles.popupLogs}
+                        placement="leftBottom"
+                        content={<div dangerouslySetInnerHTML={{ __html: logContent }} />}
+                        title={`Log of ${record.key}`}
+                        trigger="click">
+                        <Button type="primary" onClick={() => viewLogsDevice(record.key)}>Logs</Button>
+                    </Popover>
+                </Col>
+                <Col className="gutter-row" xs={24} sm={24} xl={8} xxl={8} style={{ textAlign: 'center' }}>
+                    <Popover
+                        key={`detail-${record.key}`}
+                        rootClassName={styles.popupDetail}
+                        placement="leftBottom"
+                        content={gameOptionContent(record.gameOptions)}
+                        title={`Game Option of ${record.key}`}
+                        trigger="click">
+                        <Button type="primary">Detail</Button>
+                    </Popover>
+                </Col>
+            </Row >,
         },
     ];
 
