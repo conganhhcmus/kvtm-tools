@@ -1,0 +1,19 @@
+.inputNumber {
+    width: 60px;
+}
+
+.selectAuto {
+    width: 75%
+}
+
+@media only screen and (min-width: 1440px) {
+    .selectAuto {
+        width: 80% !important
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .selectAuto {
+        width: 80% !important
+    }
+}

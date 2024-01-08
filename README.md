@@ -45,3 +45,8 @@ const gameOptions = {
 ```sh
 adb exec-out screencap -p > tmp/{name}.png
 ```
+
+### Host sever
+```sh
+ngrok http --domain=renewed-moth-merry.ngrok-free.app 8080
+```
