@@ -1,52 +1,50 @@
-# Welcome to KVTM Tools!
-Hi!
+# Welcome to Auto Tools!
+Hi! I'm Kai. Here are some images of my tools
 
-## Install
-```sh
-npm install
-```
+- Desktop
+![desktop view](https://github.com/conganhhcmus/auto-tools/blob/main/desktop.gif)
+
+- Mobile
+<img src="https://github.com/conganhhcmus/auto-tools/blob/main/mobile.gif" alt="mobile view" width="400"/>
+
+
+## Notes:
+- The device must be initialized with a length and width ratio of 16:9.
+- The size of the device must be greater than 800x450.
 
 ## Usage
 
-### Notes:
-- The device must be initialized with a length and width ratio of 16:9.
-- The size of device must greater than 800x450.
-
-### Start KVTM Tools
+### Install
 ```sh
-npm run auto
+npm install
+```
+or
+```sh
+npm ci
 ```
 
-### Exclude Devices
-Update the **excludeDevices** variable which has list of device IDs in *index.js* to prevent devices from running
-```js
-const excludeDevices = ['emulator-5554', 'emulator-5556'];
+### Build
+```sh
+npm run build
+```
+or
+```sh
+npm run release
 ```
 
-### Change Iterations
-Update the **frequency** variable in *index.js* to update the number of iterations
-```js
-const frequency = 1;
+### Run Auto Tools
+Run the script below, then open your browser with the link http://localhost:8080
+```sh
+npm run app
 ```
 
-### Change GameOptions
-For detail: 
-- **hasEventTrees**: is true if having event trees that can plant
-- **resetAfterLoops**: is a number that is used for setup the script runs n times before resetting
-
-```js
-const gameOptions = {
-    hasEventTrees: true,
-    resetAfterLoops: 2,
-}
-```
-
+## Utils
 ### Screenshot
 ```sh
-adb exec-out screencap -p > tmp/{name}.png
+adb exec-out screencap -p > {name}.png
 ```
 
-### Host sever
+### Host server
 ```sh
-ngrok http --domain=renewed-moth-merry.ngrok-free.app 8080
+ngrok http --domain={domain} 8080
 ```
